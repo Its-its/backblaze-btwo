@@ -1,0 +1,15 @@
+[package]
+name = "btwo"
+version = "0.0.0"
+edition = "2021"
+authors = ["Timothy <2779546+Its-its@users.noreply.github.com>"]
+description = "Library for using the Backblaze B2 API"
+keywords = ["b2", "backblaze", "api", "http", "client", "upload"]
+categories = ["api-bindings", "asynchronous"]
+repository = "https://github.com/Its-its/backblaze-btwo"
+readme = "README.md"
+license = "MIT"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
