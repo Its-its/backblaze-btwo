@@ -1,14 +1,14 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
+mod auth;
+pub mod endpoint;
+mod error;
+mod util;
+mod keys;
+mod capabilities;
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+pub use auth::*;
+pub use error::*;
+pub(crate) use util::*;
+pub use keys::*;
+pub use capabilities::*;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
-}
+pub(crate) use endpoint::AccountAuthorization;
