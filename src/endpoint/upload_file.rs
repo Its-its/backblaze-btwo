@@ -1,10 +1,9 @@
 use reqwest::Client;
-use sha1::{Sha1, Digest};
+use sha1::{Digest, Sha1};
 
-use crate::{Result, encode_file_name, BackblazeResponseError};
+use crate::{encode_file_name, BackblazeResponseError, Result};
 
-use super::{UploadUrlResponse, UploadFileResponse};
-
+use super::{UploadFileResponse, UploadUrlResponse};
 
 /// https://www.backblaze.com/b2/docs/b2_upload_file.html
 pub async fn upload_file(

@@ -1,18 +1,17 @@
 use std::num::NonZeroUsize;
 
+use bytes::Bytes;
 use reqwest::Client;
 use serde::Deserialize;
-use sha1::{Sha1, Digest};
+use sha1::{Digest, Sha1};
 
-use crate::{Result, BackblazeResponseError};
 use super::{EncryptionConfig, UploadPartUrlResponse};
-
-
+use crate::{BackblazeResponseError, Result};
 
 /// https://www.backblaze.com/b2/docs/b2_upload_part.html
 pub async fn upload_part(
     part_number: NonZeroUsize,
-    contents: Vec<u8>,
+    contents: Bytes,
     upload: &UploadPartUrlResponse,
     client: &Client,
 ) -> Result<UploadPartResponse> {
@@ -34,8 +33,6 @@ pub async fn upload_part(
         Err(resp.json::<BackblazeResponseError>().await?.into())
     }
 }
-
-
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]

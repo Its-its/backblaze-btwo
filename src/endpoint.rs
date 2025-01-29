@@ -1,30 +1,29 @@
 use serde::Deserialize;
 use serde_json::Value;
 
-mod get_upload_url;
-mod upload_file;
-mod hide_file;
-mod start_large_file;
-mod get_upload_part_url;
-mod upload_part;
-mod finish_large_file;
+mod authorize_account;
 mod cancel_large_file;
 mod download_file_by_name;
-mod authorize_account;
+mod finish_large_file;
+mod get_upload_part_url;
+mod get_upload_url;
+mod hide_file;
+mod start_large_file;
+mod upload_file;
+mod upload_part;
 
-pub use get_upload_url::*;
-pub use upload_file::*;
-pub use hide_file::*;
-pub use start_large_file::*;
-pub use get_upload_part_url::*;
-pub use upload_part::*;
-pub use finish_large_file::*;
+pub use authorize_account::*;
 pub use cancel_large_file::*;
 pub use download_file_by_name::*;
-pub use authorize_account::*;
+pub use finish_large_file::*;
+pub use get_upload_part_url::*;
+pub use get_upload_url::*;
+pub use hide_file::*;
+pub use start_large_file::*;
+pub use upload_file::*;
+pub use upload_part::*;
 
-use crate::{BucketId, ApplicationKeyId, FileId};
-
+use crate::{ApplicationKeyId, BucketId, FileId};
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -42,7 +41,6 @@ pub enum Action {
     Unknown(String),
 }
 
-
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UploadFileResponse {
@@ -58,7 +56,7 @@ pub struct UploadFileResponse {
     pub file_info: Value,
     pub file_name: String,
     pub file_retention: Option<FileRetention>,
-    pub legal_hold: Option<LegalHold>,
+    pub legal_hold: Option<LegalHoldType>,
     pub replication_status: Option<ReplicationStatus>,
     pub server_side_encryption: Option<EncryptionConfig>,
     pub upload_timestamp: usize,
@@ -70,20 +68,34 @@ pub enum ReplicationStatus {
     Pending,
     Completed,
     Failed,
-    Replica
+    Replica,
 }
 
+#[derive(Debug, Deserialize)]
+#[serde(untagged)]
+pub enum LegalHoldType {
+    Toggle(LegalHoldToggle),
+    Expanded(LegalHoldExpanded),
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct LegalHoldExpanded {
+    pub is_client_authorized_to_read: bool,
+    pub value: Option<LegalHoldToggle>,
+}
 
 #[derive(Debug)]
-pub enum LegalHold {
+pub enum LegalHoldToggle {
     On,
     Off,
 }
 
-impl<'de> Deserialize<'de> for LegalHold {
+impl<'de> Deserialize<'de> for LegalHoldToggle {
     fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
-        D: serde::Deserializer<'de> {
+        D: serde::Deserializer<'de>,
+    {
         if String::deserialize(deserializer)? == "on" {
             Ok(Self::On)
         } else {
@@ -92,14 +104,12 @@ impl<'de> Deserialize<'de> for LegalHold {
     }
 }
 
-
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct EncryptionConfig {
     pub mode: Option<String>,
     pub algorithm: Option<String>,
 }
-
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -115,7 +125,6 @@ pub struct FileRetentionValue {
     pub mode: FileRetentionMode,
     pub retain_until_timestamp: usize,
 }
-
 
 #[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "camelCase")]
