@@ -1,8 +1,6 @@
-use serde::{Serialize, Deserialize};
-
+use serde::{Deserialize, Serialize};
 
 pub type Result<V, E = Error> = std::result::Result<V, E>;
-
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
@@ -23,8 +21,7 @@ pub enum Error {
     B2UploadFile,
 }
 
-
-#[derive(Debug, Serialize, Deserialize, thiserror::Error)]
+#[derive(Debug, PartialEq, Clone, Serialize, Deserialize, thiserror::Error)]
 #[error("Backblaze Error:\nStatus: {status},\nCode: {code:?},\nMessage: {message}")]
 pub struct BackblazeResponseError {
     pub status: isize,
@@ -32,8 +29,7 @@ pub struct BackblazeResponseError {
     pub message: String,
 }
 
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, PartialEq, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 #[serde(untagged)]
 pub enum BackblazeErrorIdentifier {
