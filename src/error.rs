@@ -27,9 +27,9 @@ pub enum Error {
 #[derive(Debug, Serialize, Deserialize, thiserror::Error)]
 #[error("Backblaze Error:\nStatus: {status},\nCode: {code:?},\nMessage: {message}")]
 pub struct BackblazeResponseError {
-    status: isize,
-    code: BackblazeErrorIdentifier,
-    message: String,
+    pub status: isize,
+    pub code: BackblazeErrorIdentifier,
+    pub message: String,
 }
 
 
