@@ -1,7 +1,10 @@
-use std::{borrow::Cow, ops::Deref, fmt::{self, Display, Formatter}};
+use std::{
+    borrow::Cow,
+    fmt::{self, Display, Formatter},
+    ops::Deref,
+};
 
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
-
 
 #[macro_export]
 macro_rules! create {
@@ -48,7 +51,8 @@ macro_rules! create {
         impl<'de> Deserialize<'de> for $name {
             fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
             where
-                D: Deserializer<'de> {
+                D: Deserializer<'de>,
+            {
                 Ok(Self::new_owned(String::deserialize(deserializer)?))
             }
         }
@@ -56,7 +60,8 @@ macro_rules! create {
         impl Serialize for $name {
             fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
             where
-                S: Serializer {
+                S: Serializer,
+            {
                 self.0.serialize(serializer)
             }
         }

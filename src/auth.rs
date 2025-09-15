@@ -1,7 +1,10 @@
-use base64::{Engine as _, engine::general_purpose};
+use base64::{engine::general_purpose, Engine as _};
 use reqwest::Client;
 
-use crate::{Result, ApplicationKeyId, ApplicationKey, endpoint::{AccountAuthorization, self}};
+use crate::{
+    endpoint::{self, AccountAuthorization},
+    ApplicationKey, ApplicationKeyId, Result,
+};
 
 #[derive(Clone)]
 pub struct Credentials {
@@ -18,10 +21,7 @@ impl Credentials {
     }
 
     pub const fn new_const(id: ApplicationKeyId, key: ApplicationKey) -> Self {
-        Self {
-            id,
-            key,
-        }
+        Self { id, key }
     }
 
     pub(crate) fn header_name(&self) -> &str {

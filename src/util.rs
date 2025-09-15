@@ -1,15 +1,14 @@
 pub const API_URL_V2: &str = "https://api.backblazeb2.com/b2api/v2";
 
-
 // Names can be pretty much any UTF-8 string up to 1024 bytes long. There are a few picky rules:
 pub fn encode_file_name(file_name: &str) -> String {
     let mut file_name = file_name
-    // Backslashes are not allowed.
-    .replace('\\', "/")
-    .replace("//", "--")
-    .replace(' ', "%20")
-    // DEL characters (127) are not allowed.
-    .replace('\u{7F}', "-");
+        // Backslashes are not allowed.
+        .replace('\\', "/")
+        .replace("//", "--")
+        .replace(' ', "%20")
+        // DEL characters (127) are not allowed.
+        .replace('\u{7F}', "-");
 
     // File names cannot start with "/", end with "/", or contain "//".
     if file_name.ends_with('/') {

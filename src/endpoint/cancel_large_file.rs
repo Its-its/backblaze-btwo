@@ -2,8 +2,7 @@ use reqwest::Client;
 use serde::Deserialize;
 use serde_json::json;
 
-use crate::{Result, AccountAuthorization, BackblazeResponseError, FileId};
-
+use crate::{AccountAuthorization, BackblazeResponseError, FileId, Result};
 
 /// https://www.backblaze.com/b2/docs/b2_cancel_large_file.html
 pub async fn cancel_large_file(

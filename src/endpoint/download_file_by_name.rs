@@ -1,6 +1,6 @@
-use reqwest::{Response, Client};
+use reqwest::{Client, Response};
 
-use crate::{Result, AccountAuthorization, encode_file_name, BackblazeResponseError};
+use crate::{encode_file_name, AccountAuthorization, BackblazeResponseError, Result};
 
 /// https://www.backblaze.com/b2/docs/b2_download_file_by_name.html
 pub async fn download_file_by_name(
@@ -10,7 +10,14 @@ pub async fn download_file_by_name(
     client: &Client,
 ) -> Result<Response> {
     let resp = client
-        .get(format!("{}/file/{bucket_name}/{}", auth.download_url, encode_file_name(file_path)).as_str())
+        .get(
+            format!(
+                "{}/file/{bucket_name}/{}",
+                auth.download_url,
+                encode_file_name(file_path)
+            )
+            .as_str(),
+        )
         .header("Authorization", auth.authorization_token.as_str())
         .send()
         .await?;

@@ -1,10 +1,7 @@
 use reqwest::Client;
 use serde_json::json;
 
-use crate::{AccountAuthorization, encode_file_name, Result, BackblazeResponseError, BucketId};
-
-
-
+use crate::{encode_file_name, AccountAuthorization, BackblazeResponseError, BucketId, Result};
 
 /// https://www.backblaze.com/b2/docs/b2_hide_file.html
 pub async fn hide_file(

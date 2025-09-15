@@ -1,10 +1,9 @@
 use reqwest::Client;
 use serde_json::json;
 
-use crate::{Result, AccountAuthorization, encode_file_name, BackblazeResponseError, BucketId};
+use crate::{encode_file_name, AccountAuthorization, BackblazeResponseError, BucketId, Result};
 
 use super::UploadFileResponse;
-
 
 /// https://www.backblaze.com/b2/docs/b2_start_large_file.html
 pub async fn start_large_file(

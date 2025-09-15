@@ -1,9 +1,10 @@
 use reqwest::Client;
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
-use crate::{util::API_URL_V2, BackblazeResponseError, Result, Credentials, ApplicationKeyId, BucketId, Capability};
-
-
+use crate::{
+    util::API_URL_V2, ApplicationKeyId, BackblazeResponseError, BucketId, Capability, Credentials,
+    Result,
+};
 
 /// https://www.backblaze.com/b2/docs/b2_authorize_account.html
 pub async fn authorize_account(
@@ -11,7 +12,7 @@ pub async fn authorize_account(
     client: &Client,
 ) -> Result<AccountAuthorization> {
     let resp = client
-        .get(format!("{}/b2_authorize_account", API_URL_V2).as_str())
+        .get(format!("{API_URL_V2}/b2_authorize_account").as_str())
         .header(creds.header_name(), creds.auth_string())
         .send()
         .await?;

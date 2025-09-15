@@ -1,9 +1,8 @@
 use reqwest::Client;
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 use serde_json::json;
 
-use crate::{Result, AccountAuthorization, BackblazeResponseError, BucketId};
-
+use crate::{AccountAuthorization, BackblazeResponseError, BucketId, Result};
 
 pub async fn get_upload_url(
     bucket_id: &BucketId,
@@ -25,7 +24,6 @@ pub async fn get_upload_url(
         Err(resp.json::<BackblazeResponseError>().await?.into())
     }
 }
-
 
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]

@@ -1,14 +1,14 @@
 mod auth;
+mod capabilities;
 pub mod endpoint;
 mod error;
-mod util;
 mod keys;
-mod capabilities;
+mod util;
 
 pub use auth::*;
-pub use error::*;
-pub(crate) use util::*;
-pub use keys::*;
 pub use capabilities::*;
+pub use error::*;
+pub use keys::*;
+pub(crate) use util::*;
 
 pub(crate) use endpoint::AccountAuthorization;
