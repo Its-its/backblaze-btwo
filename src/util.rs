@@ -1,4 +1,4 @@
-pub const API_URL_V2: &str = "https://api.backblazeb2.com/b2api/v2";
+pub const API_URL_V4: &str = "https://api.backblazeb2.com/b2api/v4";
 
 // Names can be pretty much any UTF-8 string up to 1024 bytes long. There are a few picky rules:
 pub fn encode_file_name(file_name: &str) -> String {

@@ -3,22 +3,28 @@ use serde_json::Value;
 
 mod authorize_account;
 mod cancel_large_file;
+mod delete_file_version;
 mod download_file_by_name;
 mod finish_large_file;
+mod get_file_info;
 mod get_upload_part_url;
 mod get_upload_url;
 mod hide_file;
+mod list_file_versions;
 mod start_large_file;
 mod upload_file;
 mod upload_part;
 
 pub use authorize_account::*;
 pub use cancel_large_file::*;
+pub use delete_file_version::*;
 pub use download_file_by_name::*;
 pub use finish_large_file::*;
+pub use get_file_info::*;
 pub use get_upload_part_url::*;
 pub use get_upload_url::*;
 pub use hide_file::*;
+pub use list_file_versions::*;
 pub use start_large_file::*;
 pub use upload_file::*;
 pub use upload_part::*;
@@ -134,4 +140,42 @@ pub enum FileRetentionMode {
     Governance,
 
     Unknown(String),
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct DeleteFileVersionResponse {
+    pub file_id: String,
+    pub file_name: String,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct GetFileInfoResponse {
+    pub account_id: ApplicationKeyId,
+    pub action: Action,
+    pub bucket_id: BucketId,
+    pub content_length: usize,
+    pub content_sha1: String,
+    pub content_md5: Option<String>,
+    pub content_type: String,
+    /// The unique identifier for this version of this file.
+    pub file_id: FileId,
+    /// The custom information that was uploaded with the file.
+    /// This is a JSON object, holding the name/value pairs that were uploaded with the file.
+    pub file_info: Value,
+    pub file_name: String,
+    pub file_retention: Option<FileRetention>,
+    pub legal_hold: Option<LegalHoldType>,
+    pub replication_status: Option<ReplicationStatus>,
+    pub server_side_encryption: Option<EncryptionConfig>,
+    pub upload_timestamp: usize,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ListFileVersionsResponse {
+    pub files: Vec<GetFileInfoResponse>,
+    pub next_file_name: Option<String>,
+    pub next_file_id: Option<String>,
 }

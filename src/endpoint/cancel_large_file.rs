@@ -15,7 +15,7 @@ pub async fn cancel_large_file(
     });
 
     let resp = client
-        .post(format!("{}/b2api/v2/b2_cancel_large_file", auth.api_url).as_str())
+        .post(format!("{}/b2api/v2/b2_cancel_large_file", auth.api_info.storage_api.api_url).as_str())
         .header("Authorization", auth.authorization_token.as_str())
         .body(serde_json::to_string(&body)?)
         .send()

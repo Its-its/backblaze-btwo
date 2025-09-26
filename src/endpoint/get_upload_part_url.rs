@@ -15,7 +15,7 @@ pub async fn get_upload_part_url(
     });
 
     let resp = client
-        .post(format!("{}/b2api/v2/b2_get_upload_part_url", auth.api_url).as_str())
+        .post(format!("{}/b2api/v2/b2_get_upload_part_url", auth.api_info.storage_api.api_url).as_str())
         .header("Authorization", auth.authorization_token.as_str())
         .body(serde_json::to_string(&body)?)
         .send()

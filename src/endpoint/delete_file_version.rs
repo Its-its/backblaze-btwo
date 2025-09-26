@@ -1,26 +1,29 @@
 use reqwest::Client;
 use serde_json::json;
 
-use crate::{AccountAuthorization, BackblazeResponseError, FileId, Result};
+use crate::{
+    AccountAuthorization, BackblazeResponseError, FileId, Result, encode_file_name,
+    endpoint::DeleteFileVersionResponse,
+};
 
-use super::UploadFileResponse;
-
-/// https://www.backblaze.com/b2/docs/b2_finish_large_file.html
-pub async fn finish_large_file(
-    file_id: &FileId,
-    ordered_sha1_parts: &[String],
+/// https://www.backblaze.com/b2/docs/b2_delete_file_version.html
+pub async fn delete_file_version(
+    file_path: &str,
+    file_id: FileId,
+    bypass_governance: bool,
     auth: &AccountAuthorization,
     client: &Client,
-) -> Result<UploadFileResponse> {
+) -> Result<DeleteFileVersionResponse> {
     let body = json!({
+        "fileName": encode_file_name(file_path),
         "fileId": file_id,
-        "partSha1Array": ordered_sha1_parts,
+        "bypassGovernance": bypass_governance,
     });
 
     let resp = client
         .post(
             format!(
-                "{}/b2api/v2/b2_finish_large_file",
+                "{}/b2api/v4/b2_delete_file_version",
                 auth.api_info.storage_api.api_url
             )
             .as_str(),
