@@ -31,7 +31,7 @@ pub use upload_part::*;
 
 use crate::{ApplicationKeyId, BucketId, FileId};
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "snake_case")]
 #[serde(untagged)]
 pub enum Action {
@@ -47,7 +47,7 @@ pub enum Action {
     Unknown(String),
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UploadFileResponse {
     pub account_id: ApplicationKeyId,
@@ -77,21 +77,21 @@ pub enum ReplicationStatus {
     Replica,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 #[serde(untagged)]
 pub enum LegalHoldType {
     Toggle(LegalHoldToggle),
     Expanded(LegalHoldExpanded),
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LegalHoldExpanded {
     pub is_client_authorized_to_read: bool,
     pub value: Option<LegalHoldToggle>,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum LegalHoldToggle {
     On,
     Off,
@@ -110,14 +110,14 @@ impl<'de> Deserialize<'de> for LegalHoldToggle {
     }
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct EncryptionConfig {
     pub mode: Option<String>,
     pub algorithm: Option<String>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FileRetention {
     pub is_client_authorized_to_read: bool,
@@ -125,7 +125,7 @@ pub struct FileRetention {
     pub value: Option<FileRetentionValue>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct FileRetentionValue {
     pub mode: FileRetentionMode,
@@ -142,14 +142,14 @@ pub enum FileRetentionMode {
     Unknown(String),
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct DeleteFileVersionResponse {
     pub file_id: String,
     pub file_name: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GetFileInfoResponse {
     pub account_id: ApplicationKeyId,
@@ -172,7 +172,7 @@ pub struct GetFileInfoResponse {
     pub upload_timestamp: usize,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Clone, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ListFileVersionsResponse {
     pub files: Vec<GetFileInfoResponse>,
