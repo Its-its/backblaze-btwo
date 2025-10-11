@@ -1,6 +1,6 @@
 [package]
 name = "btwo"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2024"
 authors = ["Timothy <2779546+Its-its@users.noreply.github.com>"]
 description = "Library for using the Backblaze B2 API"
