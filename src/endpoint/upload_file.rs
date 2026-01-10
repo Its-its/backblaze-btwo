@@ -1,9 +1,12 @@
-use reqwest::Client;
-use sha1::{Digest, Sha1};
-
-use crate::{encode_file_name, BackblazeResponseError, Result};
-
-use super::{UploadFileResponse, UploadUrlResponse};
+use {
+    super::{
+        super::{BackblazeResponseError, Result, encode_file_name},
+        UploadFileResponse, UploadUrlResponse,
+    },
+    base16ct::upper::encode_string,
+    reqwest::Client,
+    sha1::{Digest, Sha1},
+};
 
 /// https://www.backblaze.com/b2/docs/b2_upload_file.html
 pub async fn upload_file(
@@ -13,7 +16,7 @@ pub async fn upload_file(
     upload: &UploadUrlResponse,
     client: &Client,
 ) -> Result<UploadFileResponse> {
-    let sha = format!("{:X}", Sha1::digest(contents.as_slice()));
+    let sha = encode_string(&Sha1::digest(contents.as_slice()));
 
     let resp = client
         .post(upload.upload_url.as_str())
@@ -30,5 +33,16 @@ pub async fn upload_file(
         Ok(resp.json().await?)
     } else {
         Err(resp.json::<BackblazeResponseError>().await?.into())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_sha1() {
+        let sha = encode_string(&Sha1::digest(b"abc"));
+        assert_eq!("A9993E364706816ABA3E25717850C26C9CD0D89D", sha);
     }
 }

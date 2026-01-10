@@ -1,12 +1,15 @@
-use std::num::NonZeroUsize;
-
-use bytes::Bytes;
-use reqwest::Client;
-use serde::Deserialize;
-use sha1::{Digest, Sha1};
-
-use super::{EncryptionConfig, UploadPartUrlResponse};
-use crate::{BackblazeResponseError, Result};
+use {
+    super::{
+        super::{BackblazeResponseError, Result},
+        EncryptionConfig, UploadPartUrlResponse,
+    },
+    base16ct::upper::encode_string,
+    bytes::Bytes,
+    reqwest::Client,
+    serde::Deserialize,
+    sha1::{Digest, Sha1},
+    std::num::NonZeroUsize,
+};
 
 /// https://www.backblaze.com/b2/docs/b2_upload_part.html
 pub async fn upload_part(
@@ -15,7 +18,7 @@ pub async fn upload_part(
     upload: &UploadPartUrlResponse,
     client: &Client,
 ) -> Result<UploadPartResponse> {
-    let sha = format!("{:X}", Sha1::digest(&contents));
+    let sha = encode_string(&Sha1::digest(&contents));
 
     let resp = client
         .post(upload.upload_url.as_str())
