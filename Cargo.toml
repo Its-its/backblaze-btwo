@@ -11,12 +11,19 @@ readme = "README.md"
 license = "MIT"
 
 [dependencies]
-thiserror = "2.0"
+thiserror = "2.0.17"
 
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
+serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.149"
+base64 = "0.22.1"
+bytes = "1.11.0"
+sha1 = "0.11.0-rc.3"
+base16ct = { version = "1.0.0",features = ["alloc"] }
 
-reqwest = { version = "0.12", features = ["json"] }
-base64 = "0.22"
-bytes = "1.10"
-sha1 = "0.10"
+[dependencies.reqwest]
+version = "0.13.1"
+default-features = false
+features = ["native-tls", "json"]
+
+[dev-dependencies]
+tokio = {version = "1.49.0", features = ["macros", "rt-multi-thread"]}
