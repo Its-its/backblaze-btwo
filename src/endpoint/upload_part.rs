@@ -15,7 +15,7 @@ pub async fn upload_part(
     upload: &UploadPartUrlResponse,
     client: &Client,
 ) -> Result<UploadPartResponse> {
-    let sha = format!("{:X}", base16ct::HexDisplay(&Sha1::digest(contents.as_slice())));
+    let sha = format!("{:X}", base16ct::HexDisplay(&Sha1::digest(&contents)));
 
     let resp = client
         .post(upload.upload_url.as_str())
