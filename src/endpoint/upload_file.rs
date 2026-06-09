@@ -13,7 +13,7 @@ pub async fn upload_file(
     upload: &UploadUrlResponse,
     client: &Client,
 ) -> Result<UploadFileResponse> {
-    let sha = format!("{:X}", Sha1::digest(contents.as_slice()));
+    let sha = format!("{:X}", base16ct::HexDisplay(&Sha1::digest(contents.as_slice())));
 
     let resp = client
         .post(upload.upload_url.as_str())
